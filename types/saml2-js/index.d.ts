@@ -18,10 +18,9 @@ declare module "saml2-js" {
         allow_unencrypted_assertion?: boolean;
     }
 
-
     export class ServiceProvider {
         constructor(options: ServiceProviderOptions);
-
+        create_authn_request_xml(IdP: IdentityProvider, options: CreateAuthNRequestOptions): void;
         create_login_request_url(IdP: IdentityProvider, options: CreateLoginRequestUrlOptions, cb: (error: any, login_url: string, request_id: string) => void): void;
         redirect_assert(IdP: IdentityProvider, options: GetAssertOptions, cb: (error: any, response: any) => void): void;
         post_assert(IdP: IdentityProvider, options: GetAssertOptions, cb: (error: any, response: any) => void): void;
@@ -29,6 +28,7 @@ declare module "saml2-js" {
         create_logout_response_url(IdP: IdentityProvider, options: CreateLogoutResponseUrlOptions, cb: (error: any, response_url: string) => void): void;
         create_metadata(): string;
     }
+    
     export interface ServiceProviderOptions {
         entity_id: string;
         private_key: string;
@@ -42,6 +42,7 @@ declare module "saml2-js" {
         sign_get_request?: boolean;
         allow_unencrypted_assertion?: boolean;
     }
+    
     export interface CreateLoginRequestUrlOptions {
         relay_state?: string;
         auth_context?: AuthnContextClassRef;
@@ -49,10 +50,12 @@ declare module "saml2-js" {
         force_authn?: boolean;
         sign_get_request?: boolean;
     }
+    
     export interface GetAssertOptions {
         request_body?: any;
         allow_unencrypted_assertion?: boolean;
     }
+    
     export interface CreateLogoutRequestUrlOptions {
         name_id?: string;
         session_index?: string;
@@ -60,13 +63,22 @@ declare module "saml2-js" {
         sign_get_request?: boolean;
         relay_state?: string;
     }
+    
+    export interface CreateAuthNRequestOptions {
+        issuer: string;
+        assert_endpoint: string;
+        destination: stromg;
+        force_authn: boolean;
+        context: AuthnContextClassRef;
+        nameid_format?: string;
+    }
+    
     export interface CreateLogoutResponseUrlOptions {
         in_response_to?: string;
         sign_get_request?: boolean;
         relay_state?: string;
     }
-
-
+    
     export interface AuthnContextClassRef {
         comparison: string;
         class_refs: string[];
